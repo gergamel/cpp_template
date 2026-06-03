@@ -59,6 +59,9 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/arm-none-eabi-gcc-debug",
       "toolchainFile": "${sourceDir}/cmake/CMakeToolchain.cmake",
+      "environment": {
+        "TARGET_ARCH": "arm-none-eabi"
+      },
       "cacheVariables": {
         "TARGET_ARCH": "arm-none-eabi",
         "CMAKE_BUILD_TYPE": "Debug",
@@ -73,6 +76,9 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/arm-none-eabi-clang-debug",
       "toolchainFile": "${sourceDir}/cmake/CMakeToolchain.cmake",
+      "environment": {
+        "TARGET_ARCH": "arm-none-eabi"
+      },
       "cacheVariables": {
         "TARGET_ARCH": "arm-none-eabi",
         "CMAKE_BUILD_TYPE": "Debug",
@@ -88,6 +94,9 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/arm-linux-eabihf-gcc-release",
       "toolchainFile": "${sourceDir}/cmake/CMakeToolchain.cmake",
+      "environment": {
+        "TARGET_ARCH": "arm-linux-eabihf"
+      },
       "cacheVariables": {
         "TARGET_ARCH": "arm-linux-eabihf",
         "CMAKE_BUILD_TYPE": "Release",
@@ -101,6 +110,9 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/arm-linux-eabihf-clang-release",
       "toolchainFile": "${sourceDir}/cmake/CMakeToolchain.cmake",
+      "environment": {
+        "TARGET_ARCH": "arm-linux-eabihf"
+      },
       "cacheVariables": {
         "TARGET_ARCH": "arm-linux-eabihf",
         "CMAKE_BUILD_TYPE": "Release",
@@ -116,6 +128,9 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/arm64-linux-gcc-release",
       "toolchainFile": "${sourceDir}/cmake/CMakeToolchain.cmake",
+      "environment": {
+        "TARGET_ARCH": "arm64-linux"
+      },
       "cacheVariables": {
         "TARGET_ARCH": "arm64-linux",
         "CMAKE_BUILD_TYPE": "Release",
@@ -129,6 +144,9 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/arm64-linux-clang-release",
       "toolchainFile": "${sourceDir}/cmake/CMakeToolchain.cmake",
+      "environment": {
+        "TARGET_ARCH": "arm64-linux"
+      },
       "cacheVariables": {
         "TARGET_ARCH": "arm64-linux",
         "CMAKE_BUILD_TYPE": "Release",

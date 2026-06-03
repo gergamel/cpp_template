@@ -107,13 +107,17 @@ def install_packages(path, manager, dry_run=False):
         if packages:
             package_text += f" {packages}"
 
-    packages = shlex.split(package_text.strip())
+    packages = list(dict.fromkeys(shlex.split(package_text.strip())))
     if not packages:
         print(f"No packages found for manager '{manager}'.")
         return 0
 
     if manager == "dnf":
         cmd = ["dnf", "install", "-y"] + packages
+        if dry_run:
+            print("+ " + shlex.join(cmd))
+            return 0
+        return subprocess.run(cmd, check=True).returncode
     elif manager == "apt":
         update_cmd = ["apt-get", "update", "-y"]
         install_cmd = ["apt-get", "install", "-y", "--no-install-recommends"] + packages
@@ -125,12 +129,6 @@ def install_packages(path, manager, dry_run=False):
         return subprocess.run(install_cmd, check=True).returncode
     else:
         raise ValueError(f"Unsupported package manager: {manager}")
-
-    if dry_run:
-        print("+ " + shlex.join(cmd))
-        return 0
-
-    return subprocess.run(cmd, check=True).returncode
 
 
 def download_file(url, dest, dry_run=False):

@@ -81,17 +81,6 @@ This template supports both container-based CI and local toolchain installs.
 - On Windows, the default tool root is `C:/tools`.
 - Use `TOOLS_ROOT` to point to a shared path if you maintain a common tool folder.
 
-```sh
-python3 -m py_compile scripts/manifest-helper.py
-bash -n scripts/setup-machine.sh
-bash -n scripts/fetch-tools.sh
-Smoke-tested:
-python3 manifest-helper.py commands
-python3 manifest-helper.py archive-url linux cmake
-bash fetch-tools.sh --tool cmake --dry-run
-bash setup-machine.sh --dry-run
-```
-
 Example local bootstrap:
 
 ```bash
@@ -124,6 +113,56 @@ Example local CI command:
 chmod +x scripts/setup-machine.sh scripts/ci-local.sh
 ./scripts/ci-local.sh --preset native-clang-debug --build --test --ctest
 ```
+
+## Local CI reproduction
+
+If you have Docker installed, you can reproduce the CI environment locally without changing your host machine.
+
+1. Build the local CI image:
+
+```bash
+docker build -t cpp_template_ci:local -f docker/ubuntu-cpp-toolchain.Dockerfile .
+```
+
+2. Run the GitHub Actions-style matrix locally:
+
+```bash
+docker run --rm -v "$PWD":/workspace -w /workspace cpp_template_ci:local bash -lc \
+  "chmod +x scripts/setup-machine.sh scripts/ci-local.sh && \
+   ./scripts/ci-local.sh --ci --preset native-gcc-debug --build --test --ctest && \
+   ./scripts/ci-local.sh --ci --preset native-clang-debug --build --test --ctest"
+```
+
+> Note: these commands run inside Docker as root, so they do not require `sudo` inside the container.
+
+3. Run the GitLab CI-style build matrix locally:
+
+```bash
+for preset in native-gcc-release native-clang-release \
+              arm-linux-eabihf-gcc-release arm-linux-eabihf-clang-release \
+              arm64-linux-gcc-release arm64-linux-clang-release \
+              arm-none-eabi-gcc-debug arm-none-eabi-clang-debug; do
+  docker run --rm -v "$PWD":/workspace -w /workspace cpp_template_ci:local bash -lc \
+    "chmod +x scripts/setup-machine.sh scripts/ci-local.sh && \
+     ./scripts/ci-local.sh --ci --preset $preset --build"
+  if [ $? -ne 0 ]; then
+    echo "Preset failed: $preset"
+    exit 1
+  fi
+done
+```
+
+4. Run the GitLab unit test job locally (use a valid native debug preset):
+
+```bash
+docker run --rm -v "$PWD":/workspace -w /workspace cpp_template_ci:local bash -lc \
+  "chmod +x scripts/setup-machine.sh scripts/ci-local.sh && \
+   ./scripts/ci-local.sh --ci --preset native-gcc-debug --build --test --ctest"
+```
+
+> Note: this runs inside Docker as root, so the container does not require `sudo`. If you instead run `./scripts/ci-local.sh --ci ...` directly on your host, that script may attempt `sudo` when not run as root.
+
+These commands use the same `scripts/setup-machine.sh` and `scripts/ci-local.sh` helpers as CI, so they are the closest local approximation to GitHub Actions and GitLab CI.
 
 ## Docker / CI image
 

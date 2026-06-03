@@ -10,7 +10,6 @@ RUN apt-get update -y && \
         git \
         curl \
         python3 \
-        python3-distutils \
         gcc \
         g++ \
         gcc-arm-linux-gnueabihf \
@@ -18,7 +17,6 @@ RUN apt-get update -y && \
         gcc-aarch64-linux-gnu \
         g++-aarch64-linux-gnu \
         gcc-arm-none-eabi \
-        g++-arm-none-eabi \
         binutils-arm-none-eabi && \
     rm -rf /var/lib/apt/lists/*
 

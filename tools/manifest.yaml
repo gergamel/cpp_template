@@ -23,7 +23,7 @@ tools:
     alternative_command: python
     minimum_version: 3.8
     packages:
-      apt: python3 python3-distutils
+      apt: python3
       dnf: python3
     archives:
       windows: https://www.python.org/ftp/python/3.14.4/python-3.14.4-embed-amd64.zip
@@ -74,7 +74,7 @@ tools:
   - name: arm-none-eabi-g++
     command: arm-none-eabi-g++
     packages:
-      apt: g++-arm-none-eabi
+      apt: gcc-arm-none-eabi
       dnf: arm-none-eabi-gcc-cs
     archives:
       linux: https://developer.arm.com/-/media/Files/downloads/gnu/15.2.rel1/binrel/arm-gnu-toolchain-15.2.rel1-x86_64-arm-none-eabi.tar.xz
