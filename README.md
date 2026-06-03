@@ -19,26 +19,53 @@ A minimal, VS Code–friendly C++ template for native and cross-compilation buil
 
 ## Build targets
 
-### Native
+This project exposes explicit GCC and Clang presets for both host and cross builds.
+
+### Native presets
+
+- `native-gcc-debug`
+- `native-clang-debug`
+- `native-gcc-release`
+- `native-clang-release`
+
+Example:
 
 ```bash
-cmake --preset native-debug
-cmake --build --preset native-debug
-cmake --build --preset native-debug --target test
+cmake --preset native-clang-debug && \
+cmake --build --preset native-clang-debug && \
+cmake --build --preset native-clang-debug --target test
 ```
 
-### Cross compile
+```bash
+cmake --preset native-gcc-debug && \
+cmake --build --preset native-gcc-debug && \
+cmake --build --preset native-gcc-debug --target test
+```
+
+### Cross-presets
+
+- `arm-none-eabi-gcc-debug`
+- `arm-none-eabi-clang-debug`
+- `arm-linux-eabihf-gcc-release`
+- `arm-linux-eabihf-clang-release`
+- `arm64-linux-gcc-release`
+- `arm64-linux-clang-release`
+
+Example:
 
 ```bash
-cmake --preset arm-linux-eabihf-release
-cmake --build --preset arm-linux-eabihf-release
+cmake --preset arm-linux-eabihf-clang-release
+cmake --build --preset arm-linux-eabihf-clang-release
 ```
 
 ### Bare-metal Cortex-M
 
+- `arm-none-eabi-gcc-debug`
+- `arm-none-eabi-clang-debug`
+
 ```bash
-cmake --preset arm-none-eabi-debug
-cmake --build --preset arm-none-eabi-debug
+cmake --preset arm-none-eabi-clang-debug
+cmake --build --preset arm-none-eabi-clang-debug
 ```
 
 > Bare-metal build will produce an ELF for ARM Cortex-M, but execution requires hardware or a simulator.

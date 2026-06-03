@@ -92,8 +92,13 @@ bool UdpSocket::sendTo(std::string const& host, uint16_t port, std::vector<uint8
     inet_pton(AF_INET, host.c_str(), &address.sin_addr);
     address.sin_port = htons(port);
 
+#ifdef _WIN32
     const auto sent = sendto(sockfd_, reinterpret_cast<char const*>(payload.data()), static_cast<int>(payload.size()), 0,
                             reinterpret_cast<sockaddr const*>(&address), sizeof(address));
+#else
+    const auto sent = sendto(sockfd_, reinterpret_cast<char const*>(payload.data()), payload.size(), 0,
+                            reinterpret_cast<sockaddr const*>(&address), sizeof(address));
+#endif
     using sent_t = std::remove_const_t<decltype(sent)>;
     return sent == static_cast<sent_t>(payload.size());
 }
@@ -120,8 +125,13 @@ std::optional<UdpPacket> UdpSocket::receiveOne(int timeoutMs)
     std::vector<uint8_t> buffer(2048);
     sockaddr_in sender{};
     socklen_t senderSize = sizeof(sender);
+#ifdef _WIN32
     const auto count = recvfrom(sockfd_, reinterpret_cast<char*>(buffer.data()), static_cast<int>(buffer.size()), 0,
                                reinterpret_cast<sockaddr*>(&sender), &senderSize);
+#else
+    const auto count = recvfrom(sockfd_, reinterpret_cast<char*>(buffer.data()), buffer.size(), 0,
+                               reinterpret_cast<sockaddr*>(&sender), &senderSize);
+#endif
     if (count <= 0) {
         return std::nullopt;
     }

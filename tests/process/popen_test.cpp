@@ -40,14 +40,14 @@ TEST(Popen, ReadWhileRunning) {
             auto line = process.stderr.readline();
             std::cout << "stderr: " << line;
         }
-        if (status.exited) {
+        if (status.exited && !status.stdout_data && !status.stderr_data) {
             break;
         }
     }
 }
 
 TEST(Popen, CapturesStdout) {
-    auto process = subprocess::Popen({"/bin/echo", "hello"});
+    auto process = subprocess::Popen({"sh", "-c", "printf 'hello\n'"});
     std::string output;
 
     while (true) {
@@ -63,3 +63,22 @@ TEST(Popen, CapturesStdout) {
     EXPECT_EQ(output, "hello\n");
     EXPECT_EQ(process.wait(), 0);
 }
+
+TEST(Popen, CapturesStderr) {
+    auto process = subprocess::Popen({"sh", "-c", "printf 'error\n' 1>&2"});
+    std::string output;
+
+    while (true) {
+        auto status = process.poll(100);
+        if (status.stderr_data) {
+            output += process.stderr.readline();
+        }
+        if (status.exited) {
+            break;
+        }
+    }
+
+    EXPECT_EQ(output, "error\n");
+    EXPECT_EQ(process.wait(), 0);
+}
+

@@ -188,7 +188,7 @@ ProcessStatus Popen::poll(int timeout_ms) noexcept
     status.stderr_data = stderr.hasBufferedData();
 
     struct pollfd descriptors[2];
-    int descriptor_count = 0;
+    nfds_t descriptor_count = 0;
 
     if (stdout.fd() >= 0) {
         descriptors[descriptor_count++] = {stdout.fd(), POLLIN | POLLHUP, 0};
@@ -200,7 +200,7 @@ ProcessStatus Popen::poll(int timeout_ms) noexcept
     if (descriptor_count > 0) {
         const int events = ::poll(descriptors, descriptor_count, timeout_ms);
         if (events >= 0) {
-            for (int index = 0; index < descriptor_count; ++index) {
+            for (nfds_t index = 0; index < descriptor_count; ++index) {
                 const auto revents = descriptors[index].revents;
                 if (revents & (POLLIN | POLLHUP | POLLERR | POLLNVAL)) {
                     if (index == 0) {
