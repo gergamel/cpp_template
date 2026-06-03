@@ -9,71 +9,61 @@ variables:
 .default_build: &default_build
   image: ubuntu:24.04
   before_script:
-    - chmod +x scripts/setup-machine.sh
+    - chmod +x scripts/setup-machine.sh scripts/ci-local.sh
     - ./scripts/setup-machine.sh --ci
 
 native-gcc-build:
   <<: *default_build
   stage: build
   script:
-    - cmake --preset native-gcc-release
-    - cmake --build --preset native-gcc-release
+    - ./scripts/ci-local.sh --ci --preset native-gcc-release --build
 
 native-clang-build:
   <<: *default_build
   stage: build
   script:
-    - cmake --preset native-clang-release
-    - cmake --build --preset native-clang-release
+    - ./scripts/ci-local.sh --ci --preset native-clang-release --build
 
 arm-linux-eabihf-gcc-build:
   <<: *default_build
   stage: build
   script:
-    - cmake --preset arm-linux-eabihf-gcc-release
-    - cmake --build --preset arm-linux-eabihf-gcc-release
+    - ./scripts/ci-local.sh --ci --preset arm-linux-eabihf-gcc-release --build
 
 arm-linux-eabihf-clang-build:
   <<: *default_build
   stage: build
   script:
-    - cmake --preset arm-linux-eabihf-clang-release
-    - cmake --build --preset arm-linux-eabihf-clang-release
+    - ./scripts/ci-local.sh --ci --preset arm-linux-eabihf-clang-release --build
 
 arm64-linux-gcc-build:
   <<: *default_build
   stage: build
   script:
-    - cmake --preset arm64-linux-gcc-release
-    - cmake --build --preset arm64-linux-gcc-release
+    - ./scripts/ci-local.sh --ci --preset arm64-linux-gcc-release --build
 
 arm64-linux-clang-build:
   <<: *default_build
   stage: build
   script:
-    - cmake --preset arm64-linux-clang-release
-    - cmake --build --preset arm64-linux-clang-release
+    - ./scripts/ci-local.sh --ci --preset arm64-linux-clang-release --build
 
 arm-none-eabi-gcc-build:
   <<: *default_build
   stage: build
   script:
-    - cmake --preset arm-none-eabi-gcc-debug
-    - cmake --build --preset arm-none-eabi-gcc-debug
+    - ./scripts/ci-local.sh --ci --preset arm-none-eabi-gcc-debug --build
 
 arm-none-eabi-clang-build:
   <<: *default_build
   stage: build
   script:
-    - cmake --preset arm-none-eabi-clang-debug
-    - cmake --build --preset arm-none-eabi-clang-debug
+    - ./scripts/ci-local.sh --ci --preset arm-none-eabi-clang-debug --build
 
 unit-tests:
   <<: *default_build
   stage: test
   script:
-    - cmake --preset native-debug
-    - cmake --build --preset native-debug --target test
-    - ctest --test-dir build/native-debug --output-on-failure
+    - ./scripts/ci-local.sh --ci --preset native-debug --build --test --ctest
   only:
     - branches

@@ -5,12 +5,18 @@ tools:
     packages:
       apt: cmake
       dnf: cmake
+    archives:
+      linux: https://github.com/Kitware/CMake/releases/download/v3.29.2/cmake-3.29.2-linux-x86_64.tar.gz
+      windows: https://github.com/Kitware/CMake/releases/download/v3.29.2/cmake-3.29.2-windows-x86_64.zip
 
   - name: ninja
     command: ninja
     packages:
       apt: ninja-build
       dnf: ninja-build
+    archives:
+      linux: https://github.com/ninja-build/ninja/releases/download/v1.13.2/ninja-linux.zip
+      windows: https://github.com/ninja-build/ninja/releases/download/v1.13.2/ninja-win.zip
 
   - name: python3
     command: python3
@@ -18,7 +24,9 @@ tools:
     minimum_version: 3.8
     packages:
       apt: python3 python3-distutils
-      dnf: python3 python3-distutils
+      dnf: python3
+    archives:
+      windows: https://www.python.org/ftp/python/3.14.4/python-3.14.4-embed-amd64.zip
 
   - name: g++
     command: g++
@@ -32,36 +40,54 @@ tools:
     packages:
       apt: clang
       dnf: clang
+    archives:
+      linux: https://github.com/llvm/llvm-project/releases/download/llvmorg-18.0.6/clang+llvm-18.0.6-x86_64-linux-gnu-ubuntu-22.04.tar.xz
+      windows: https://github.com/llvm/llvm-project/releases/download/llvmorg-18.0.6/LLVM-18.0.6-win64.zip
 
   - name: clang++
     command: clang++
     packages:
       apt: clang
       dnf: clang
+    archives:
+      linux: https://github.com/llvm/llvm-project/releases/download/llvmorg-18.0.6/clang+llvm-18.0.6-x86_64-linux-gnu-ubuntu-22.04.tar.xz
+      windows: https://github.com/llvm/llvm-project/releases/download/llvmorg-18.0.6/LLVM-18.0.6-win64.zip
 
   - name: arm-linux-eabihf-g++
     command: arm-linux-eabihf-g++
     packages:
       apt: gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
-      dnf: gcc-arm-linux-gnu-c++
+      dnf: gcc-c++-arm-linux-gnu
+    archives:
+      linux: https://developer.arm.com/-/media/Files/downloads/gnu/15.2.rel1/binrel/arm-gnu-toolchain-15.2.rel1-x86_64-arm-none-linux-gnueabihf.tar.xz
+      windows: https://developer.arm.com/-/media/Files/downloads/gnu/15.2.rel1/binrel/arm-gnu-toolchain-15.2.rel1-mingw-w64-x86_64-arm-none-linux-gnueabihf.zip
 
   - name: aarch64-linux-gnu-g++
     command: aarch64-linux-gnu-g++
     packages:
       apt: g++-aarch64-linux-gnu
-      dnf: gcc-aarch64-linux-gnu-c++
+      dnf: gcc-c++-aarch64-linux-gnu
+    archives:
+      linux: https://developer.arm.com/-/media/Files/downloads/gnu/15.2.rel1/binrel/arm-gnu-toolchain-15.2.rel1-x86_64-aarch64-none-linux-gnu.tar.xz
+      windows: https://developer.arm.com/-/media/Files/downloads/gnu/15.2.rel1/binrel/arm-gnu-toolchain-15.2.rel1-mingw-w64-x86_64-aarch64-none-linux-gnu.zip
 
   - name: arm-none-eabi-g++
     command: arm-none-eabi-g++
     packages:
       apt: g++-arm-none-eabi
       dnf: arm-none-eabi-gcc-cs
+    archives:
+      linux: https://developer.arm.com/-/media/Files/downloads/gnu/15.2.rel1/binrel/arm-gnu-toolchain-15.2.rel1-x86_64-arm-none-eabi.tar.xz
+      windows: https://developer.arm.com/-/media/Files/downloads/gnu/15.2.rel1/binrel/arm-gnu-toolchain-15.2.rel1-mingw-w64-x86_64-arm-none-eabi.zip
 
   - name: arm-none-eabi-gcc
     command: arm-none-eabi-gcc
     packages:
       apt: gcc-arm-none-eabi
       dnf: arm-none-eabi-gcc-cs
+    archives:
+      linux: https://developer.arm.com/-/media/Files/downloads/gnu/15.2.rel1/binrel/arm-gnu-toolchain-15.2.rel1-x86_64-arm-none-eabi.tar.xz
+      windows: https://developer.arm.com/-/media/Files/downloads/gnu/15.2.rel1/binrel/arm-gnu-toolchain-15.2.rel1-mingw-w64-x86_64-arm-none-eabi.zip
 
 notes:
   - "This manifest documents the preferred host and cross toolchain binaries for the template."

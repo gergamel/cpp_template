@@ -81,6 +81,17 @@ This template supports both container-based CI and local toolchain installs.
 - On Windows, the default tool root is `C:/tools`.
 - Use `TOOLS_ROOT` to point to a shared path if you maintain a common tool folder.
 
+```sh
+python3 -m py_compile scripts/manifest-helper.py
+bash -n scripts/setup-machine.sh
+bash -n scripts/fetch-tools.sh
+Smoke-tested:
+python3 manifest-helper.py commands
+python3 manifest-helper.py archive-url linux cmake
+bash fetch-tools.sh --tool cmake --dry-run
+bash setup-machine.sh --dry-run
+```
+
 Example local bootstrap:
 
 ```bash
@@ -97,6 +108,21 @@ Example manifest inspection:
 
 ```bash
 cat tools/manifest.yaml
+```
+
+## Shared CI helper
+
+This repository centralizes CI execution in `scripts/ci-local.sh` so both GitLab and GitHub workflows can use the same build logic.
+
+- GitLab CI references `scripts/ci-local.sh` from `.gitlab-ci.yml`
+- GitHub Actions runs `scripts/ci-local.sh` from `.github/workflows/ci.yml`
+- `scripts/setup-machine.sh --ci` installs prerequisites for CI containers
+
+Example local CI command:
+
+```bash
+chmod +x scripts/setup-machine.sh scripts/ci-local.sh
+./scripts/ci-local.sh --preset native-clang-debug --build --test --ctest
 ```
 
 ## Docker / CI image

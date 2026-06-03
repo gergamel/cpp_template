@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        preset: [native-gcc-debug, native-clang-debug]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Make CI scripts executable
+        run: chmod +x scripts/setup-machine.sh scripts/ci-local.sh
+
+      - name: Install container prerequisites
+        run: sudo ./scripts/setup-machine.sh --ci
+
+      - name: Build and test with preset
+        run: ./scripts/ci-local.sh --ci --preset "${{ matrix.preset }}" --build --test --ctest

@@ -73,15 +73,22 @@ print_manifest() {
     fi
 }
 
-manifest_commands() {
-    local python_exec=""
-    if command -v python3 >/dev/null 2>&1; then
-        python_exec=python3
-    elif command -v python >/dev/null 2>&1; then
-        python_exec=python
+manifest_helper() {
+    if [[ -f "$MANIFEST_HELPER" ]]; then
+        if command -v python3 >/dev/null 2>&1; then
+            printf '%s' "python3"
+            return 0
+        elif command -v python >/dev/null 2>&1; then
+            printf '%s' "python"
+            return 0
+        fi
     fi
+    return 1
+}
 
-    if [[ -n "$python_exec" ]] && [[ -f "$MANIFEST_HELPER" ]]; then
+manifest_commands() {
+    local python_exec
+    if python_exec=$(manifest_helper); then
         "$python_exec" "$MANIFEST_HELPER" commands "$MANIFEST_FILE"
     else
         grep -oP '^\s*command:\s*\K.*' "$MANIFEST_FILE"
@@ -90,15 +97,9 @@ manifest_commands() {
 
 manifest_packages() {
     local manager="$1"
-    local python_exec=""
-    if command -v python3 >/dev/null 2>&1; then
-        python_exec=python3
-    elif command -v python >/dev/null 2>&1; then
-        python_exec=python
-    fi
-
-    if [[ -n "$python_exec" ]] && [[ -f "$MANIFEST_HELPER" ]]; then
-        "$python_exec" "$MANIFEST_HELPER" packages "$MANIFEST_FILE" "$manager"
+    local python_exec
+    if python_exec=$(manifest_helper); then
+        "$python_exec" "$MANIFEST_HELPER" packages "$manager" "$MANIFEST_FILE"
     else
         grep -oP '^\s*'"$manager"':\s*\K.*' "$MANIFEST_FILE"
     fi
@@ -125,15 +126,34 @@ check_program() {
 }
 
 install_packages() {
+    local python_exec
+    if python_exec=$(manifest_helper); then
+        if [[ "$DRY_RUN" -eq 1 ]]; then
+            "$python_exec" "$MANIFEST_HELPER" install-packages dnf --dry-run "$MANIFEST_FILE"
+            return $?
+        fi
+        if command -v dnf >/dev/null 2>&1; then
+            "$python_exec" "$MANIFEST_HELPER" install-packages dnf "$MANIFEST_FILE"
+            return $?
+        elif command -v apt-get >/dev/null 2>&1; then
+            "$python_exec" "$MANIFEST_HELPER" install-packages apt "$MANIFEST_FILE"
+            return $?
+        fi
+    fi
+
     if command -v dnf >/dev/null 2>&1; then
         local packages
+        local pkg_array
         packages="$(manifest_packages dnf)"
-        run_cmd "dnf install -y ${packages}"
+        read -r -a pkg_array <<< "$packages"
+        run_cmd "dnf install -y ${pkg_array[*]}"
     elif command -v apt-get >/dev/null 2>&1; then
         local packages
+        local pkg_array
         packages="$(manifest_packages apt)"
+        read -r -a pkg_array <<< "$packages"
         run_cmd "apt-get update -y"
-        run_cmd "apt-get install -y --no-install-recommends ${packages}"
+        run_cmd "apt-get install -y --no-install-recommends ${pkg_array[*]}"
     else
         echo "No supported package manager found. Install prerequisites manually or use a prepared tool image."
         exit 1
