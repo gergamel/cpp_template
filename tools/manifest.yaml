@@ -1,0 +1,68 @@
+tools:
+  - name: cmake
+    command: cmake
+    minimum_version: 3.24
+    packages:
+      apt: cmake
+      dnf: cmake
+
+  - name: ninja
+    command: ninja
+    packages:
+      apt: ninja-build
+      dnf: ninja-build
+
+  - name: python3
+    command: python3
+    alternative_command: python
+    minimum_version: 3.8
+    packages:
+      apt: python3 python3-distutils
+      dnf: python3 python3-distutils
+
+  - name: g++
+    command: g++
+    minimum_version: 12
+    packages:
+      apt: g++
+      dnf: gcc-c++
+
+  - name: clang
+    command: clang
+    packages:
+      apt: clang
+      dnf: clang
+
+  - name: clang++
+    command: clang++
+    packages:
+      apt: clang
+      dnf: clang
+
+  - name: arm-linux-eabihf-g++
+    command: arm-linux-eabihf-g++
+    packages:
+      apt: gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
+      dnf: gcc-arm-linux-gnu-c++
+
+  - name: aarch64-linux-gnu-g++
+    command: aarch64-linux-gnu-g++
+    packages:
+      apt: g++-aarch64-linux-gnu
+      dnf: gcc-aarch64-linux-gnu-c++
+
+  - name: arm-none-eabi-g++
+    command: arm-none-eabi-g++
+    packages:
+      apt: g++-arm-none-eabi
+      dnf: arm-none-eabi-gcc-cs
+
+  - name: arm-none-eabi-gcc
+    command: arm-none-eabi-gcc
+    packages:
+      apt: gcc-arm-none-eabi
+      dnf: arm-none-eabi-gcc-cs
+
+notes:
+  - "This manifest documents the preferred host and cross toolchain binaries for the template."
+  - "Use it as a reference for local machine setup, CI images, or synchronized shared tool installs."

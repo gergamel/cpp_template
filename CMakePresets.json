@@ -1,0 +1,197 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 24,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "native-gcc-debug",
+      "displayName": "Native GCC Debug",
+      "description": "Configure native debug build with GCC",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/native-gcc-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++"
+      }
+    },
+    {
+      "name": "native-clang-debug",
+      "displayName": "Native Clang Debug",
+      "description": "Configure native debug build with Clang",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/native-clang-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++"
+      }
+    },
+    {
+      "name": "native-gcc-release",
+      "displayName": "Native GCC Release",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/native-gcc-release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++"
+      }
+    },
+    {
+      "name": "native-clang-release",
+      "displayName": "Native Clang Release",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/native-clang-release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++"
+      }
+    },
+    {
+      "name": "arm-none-eabi-gcc-debug",
+      "displayName": "ARM None EABI GCC Debug",
+      "description": "Bare-metal Cortex-M cross-build with GCC",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/arm-none-eabi-gcc-debug",
+      "toolchainFile": "${sourceDir}/cmake/CMakeToolchain.cmake",
+      "cacheVariables": {
+        "TARGET_ARCH": "arm-none-eabi",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "arm-none-eabi-gcc",
+        "CMAKE_CXX_COMPILER": "arm-none-eabi-g++"
+      }
+    },
+    {
+      "name": "arm-none-eabi-clang-debug",
+      "displayName": "ARM None EABI Clang Debug",
+      "description": "Bare-metal Cortex-M cross-build with Clang",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/arm-none-eabi-clang-debug",
+      "toolchainFile": "${sourceDir}/cmake/CMakeToolchain.cmake",
+      "cacheVariables": {
+        "TARGET_ARCH": "arm-none-eabi",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_C_COMPILER_TARGET": "arm-none-eabi",
+        "CMAKE_CXX_COMPILER_TARGET": "arm-none-eabi"
+      }
+    },
+    {
+      "name": "arm-linux-eabihf-gcc-release",
+      "displayName": "ARM Linux EABIHF GCC Release",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/arm-linux-eabihf-gcc-release",
+      "toolchainFile": "${sourceDir}/cmake/CMakeToolchain.cmake",
+      "cacheVariables": {
+        "TARGET_ARCH": "arm-linux-eabihf",
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_C_COMPILER": "arm-linux-gnueabihf-gcc",
+        "CMAKE_CXX_COMPILER": "arm-linux-gnueabihf-g++"
+      }
+    },
+    {
+      "name": "arm-linux-eabihf-clang-release",
+      "displayName": "ARM Linux EABIHF Clang Release",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/arm-linux-eabihf-clang-release",
+      "toolchainFile": "${sourceDir}/cmake/CMakeToolchain.cmake",
+      "cacheVariables": {
+        "TARGET_ARCH": "arm-linux-eabihf",
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_C_COMPILER_TARGET": "arm-linux-gnueabihf",
+        "CMAKE_CXX_COMPILER_TARGET": "arm-linux-gnueabihf"
+      }
+    },
+    {
+      "name": "arm64-linux-gcc-release",
+      "displayName": "ARM64 Linux GCC Release",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/arm64-linux-gcc-release",
+      "toolchainFile": "${sourceDir}/cmake/CMakeToolchain.cmake",
+      "cacheVariables": {
+        "TARGET_ARCH": "arm64-linux",
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_C_COMPILER": "aarch64-linux-gnu-gcc",
+        "CMAKE_CXX_COMPILER": "aarch64-linux-gnu-g++"
+      }
+    },
+    {
+      "name": "arm64-linux-clang-release",
+      "displayName": "ARM64 Linux Clang Release",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/arm64-linux-clang-release",
+      "toolchainFile": "${sourceDir}/cmake/CMakeToolchain.cmake",
+      "cacheVariables": {
+        "TARGET_ARCH": "arm64-linux",
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_C_COMPILER_TARGET": "aarch64-linux-gnu",
+        "CMAKE_CXX_COMPILER_TARGET": "aarch64-linux-gnu"
+      }
+    },
+    {
+      "name": "windows-debug",
+      "displayName": "Windows MSVC Debug",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/windows-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "native-gcc-debug",
+      "configurePreset": "native-gcc-debug"
+    },
+    {
+      "name": "native-clang-debug",
+      "configurePreset": "native-clang-debug"
+    },
+    {
+      "name": "native-gcc-release",
+      "configurePreset": "native-gcc-release"
+    },
+    {
+      "name": "native-clang-release",
+      "configurePreset": "native-clang-release"
+    },
+    {
+      "name": "arm-none-eabi-gcc-debug",
+      "configurePreset": "arm-none-eabi-gcc-debug"
+    },
+    {
+      "name": "arm-none-eabi-clang-debug",
+      "configurePreset": "arm-none-eabi-clang-debug"
+    },
+    {
+      "name": "arm-linux-eabihf-gcc-release",
+      "configurePreset": "arm-linux-eabihf-gcc-release"
+    },
+    {
+      "name": "arm-linux-eabihf-clang-release",
+      "configurePreset": "arm-linux-eabihf-clang-release"
+    },
+    {
+      "name": "arm64-linux-gcc-release",
+      "configurePreset": "arm64-linux-gcc-release"
+    },
+    {
+      "name": "arm64-linux-clang-release",
+      "configurePreset": "arm64-linux-clang-release"
+    },
+    {
+      "name": "windows-debug",
+      "configurePreset": "windows-debug"
+    }
+  ]
+}

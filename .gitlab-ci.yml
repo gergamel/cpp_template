@@ -1,0 +1,79 @@
+stages:
+  - build
+  - test
+
+variables:
+  DEBIAN_FRONTEND: noninteractive
+  CMAKE_GENERATOR: Ninja
+
+.default_build: &default_build
+  image: ubuntu:24.04
+  before_script:
+    - chmod +x scripts/setup-machine.sh
+    - ./scripts/setup-machine.sh --ci
+
+native-gcc-build:
+  <<: *default_build
+  stage: build
+  script:
+    - cmake --preset native-gcc-release
+    - cmake --build --preset native-gcc-release
+
+native-clang-build:
+  <<: *default_build
+  stage: build
+  script:
+    - cmake --preset native-clang-release
+    - cmake --build --preset native-clang-release
+
+arm-linux-eabihf-gcc-build:
+  <<: *default_build
+  stage: build
+  script:
+    - cmake --preset arm-linux-eabihf-gcc-release
+    - cmake --build --preset arm-linux-eabihf-gcc-release
+
+arm-linux-eabihf-clang-build:
+  <<: *default_build
+  stage: build
+  script:
+    - cmake --preset arm-linux-eabihf-clang-release
+    - cmake --build --preset arm-linux-eabihf-clang-release
+
+arm64-linux-gcc-build:
+  <<: *default_build
+  stage: build
+  script:
+    - cmake --preset arm64-linux-gcc-release
+    - cmake --build --preset arm64-linux-gcc-release
+
+arm64-linux-clang-build:
+  <<: *default_build
+  stage: build
+  script:
+    - cmake --preset arm64-linux-clang-release
+    - cmake --build --preset arm64-linux-clang-release
+
+arm-none-eabi-gcc-build:
+  <<: *default_build
+  stage: build
+  script:
+    - cmake --preset arm-none-eabi-gcc-debug
+    - cmake --build --preset arm-none-eabi-gcc-debug
+
+arm-none-eabi-clang-build:
+  <<: *default_build
+  stage: build
+  script:
+    - cmake --preset arm-none-eabi-clang-debug
+    - cmake --build --preset arm-none-eabi-clang-debug
+
+unit-tests:
+  <<: *default_build
+  stage: test
+  script:
+    - cmake --preset native-debug
+    - cmake --build --preset native-debug --target test
+    - ctest --test-dir build/native-debug --output-on-failure
+  only:
+    - branches

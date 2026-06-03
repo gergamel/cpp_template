@@ -1,0 +1,12 @@
+# Build output
+/build/
+
+# VS Code
+.vscode/
+
+# CMake compile commands
+compile_commands.json
+
+# Misc
+*.swp
+*.dSYM

@@ -1,0 +1,13 @@
+if(NOT DEFINED TARGET_ARCH)
+    message(FATAL_ERROR "TARGET_ARCH must be set when using CMakeToolchain.cmake")
+endif()
+
+if(TARGET_ARCH STREQUAL "arm-none-eabi")
+    include("${CMAKE_CURRENT_LIST_DIR}/ToolchainArmNoneEabi.cmake")
+elseif(TARGET_ARCH STREQUAL "arm-linux-eabihf")
+    include("${CMAKE_CURRENT_LIST_DIR}/ToolchainArmLinuxEabihf.cmake")
+elseif(TARGET_ARCH STREQUAL "arm64-linux")
+    include("${CMAKE_CURRENT_LIST_DIR}/ToolchainArm64Linux.cmake")
+else()
+    message(FATAL_ERROR "Unsupported TARGET_ARCH: ${TARGET_ARCH}")
+endif()
