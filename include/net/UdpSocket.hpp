@@ -16,8 +16,9 @@ struct UdpPacket {
 class UdpSocket {
 public:
 #ifdef _WIN32
-    using socket_type = SOCKET;
-    static constexpr socket_type invalid_socket = INVALID_SOCKET;
+    // SOCKET is UINT_PTR on Windows; use uintptr_t to avoid including winsock2.h in the header.
+    using socket_type = uintptr_t;
+    static constexpr socket_type invalid_socket = ~static_cast<uintptr_t>(0); // INVALID_SOCKET
 #else
     using socket_type = int;
     static constexpr socket_type invalid_socket = -1;

@@ -1,6 +1,13 @@
 @echo off
 setlocal EnableExtensions
 
+echo "SCRIPT_DIR=%~dp0"
+echo "MANIFEST_FILE=%SCRIPT_DIR%..\tools\manifest.yaml"
+echo "MANIFEST_HELPER=%SCRIPT_DIR%manifest-helper.py"
+echo "TOOLS_ROOT=C:\tools"
+echo "CI_MODE=0"
+echo "SHOW_HELP=0"
+
 set "SCRIPT_DIR=%~dp0"
 set "MANIFEST_FILE=%SCRIPT_DIR%..\tools\manifest.yaml"
 set "MANIFEST_HELPER=%SCRIPT_DIR%manifest-helper.py"

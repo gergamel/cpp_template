@@ -41,8 +41,8 @@ tools:
       apt: clang
       dnf: clang
     archives:
-      linux: https://github.com/llvm/llvm-project/releases/download/llvmorg-18.0.6/clang+llvm-18.0.6-x86_64-linux-gnu-ubuntu-22.04.tar.xz
-      windows: https://github.com/llvm/llvm-project/releases/download/llvmorg-18.0.6/LLVM-18.0.6-win64.zip
+      linux: https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/clang+llvm-18.1.8-x86_64-linux-gnu-ubuntu-18.04.tar.xz
+      windows: https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/clang+llvm-18.1.8-x86_64-pc-windows-msvc.tar.xz 
 
   - name: clang++
     command: clang++
@@ -50,8 +50,8 @@ tools:
       apt: clang
       dnf: clang
     archives:
-      linux: https://github.com/llvm/llvm-project/releases/download/llvmorg-18.0.6/clang+llvm-18.0.6-x86_64-linux-gnu-ubuntu-22.04.tar.xz
-      windows: https://github.com/llvm/llvm-project/releases/download/llvmorg-18.0.6/LLVM-18.0.6-win64.zip
+      linux: https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/clang+llvm-18.1.8-x86_64-linux-gnu-ubuntu-18.04.tar.xz
+      windows: https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/clang+llvm-18.1.8-x86_64-pc-windows-msvc.tar.xz 
 
   - name: arm-linux-eabihf-g++
     command: arm-linux-eabihf-g++

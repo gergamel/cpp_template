@@ -34,14 +34,6 @@ struct WinSockInitializer {
 static WinSockInitializer wsa_initializer;
 #endif
 
-UdpSocket::socket_type invalidSocket() noexcept {
-#ifdef _WIN32
-    return INVALID_SOCKET;
-#else
-    return -1;
-#endif
-}
-
 void closeSocket(UdpSocket::socket_type sock) noexcept {
 #ifdef _WIN32
     closesocket(static_cast<SOCKET>(sock));
@@ -56,7 +48,7 @@ UdpSocket::UdpSocket() = default;
 
 UdpSocket::~UdpSocket()
 {
-    if (sockfd_ != invalidSocket()) {
+    if (sockfd_ != invalid_socket) {
         closeSocket(sockfd_);
     }
 }
@@ -64,12 +56,12 @@ UdpSocket::~UdpSocket()
 bool UdpSocket::open()
 {
     sockfd_ = static_cast<socket_type>(socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP));
-    return sockfd_ != invalidSocket();
+    return sockfd_ != invalid_socket;
 }
 
 bool UdpSocket::bind(uint16_t port)
 {
-    if (sockfd_ == invalidSocket() && !open()) {
+    if (sockfd_ == invalid_socket && !open()) {
         return false;
     }
 
@@ -78,12 +70,16 @@ bool UdpSocket::bind(uint16_t port)
     address.sin_addr.s_addr = htonl(INADDR_ANY);
     address.sin_port = htons(port);
 
+#ifdef _WIN32
+    return ::bind(static_cast<SOCKET>(sockfd_), reinterpret_cast<sockaddr*>(&address), sizeof(address)) == 0;
+#else
     return ::bind(sockfd_, reinterpret_cast<sockaddr*>(&address), sizeof(address)) == 0;
+#endif
 }
 
 bool UdpSocket::sendTo(std::string const& host, uint16_t port, std::vector<uint8_t> const& payload)
 {
-    if (sockfd_ == invalidSocket() && !open()) {
+    if (sockfd_ == invalid_socket && !open()) {
         return false;
     }
 
@@ -93,8 +89,9 @@ bool UdpSocket::sendTo(std::string const& host, uint16_t port, std::vector<uint8
     address.sin_port = htons(port);
 
 #ifdef _WIN32
-    const auto sent = sendto(sockfd_, reinterpret_cast<char const*>(payload.data()), static_cast<int>(payload.size()), 0,
-                            reinterpret_cast<sockaddr const*>(&address), sizeof(address));
+    const auto sent = sendto(static_cast<SOCKET>(sockfd_), reinterpret_cast<char const*>(payload.data()),
+                             static_cast<int>(payload.size()), 0,
+                             reinterpret_cast<sockaddr const*>(&address), sizeof(address));
 #else
     const auto sent = sendto(sockfd_, reinterpret_cast<char const*>(payload.data()), payload.size(), 0,
                             reinterpret_cast<sockaddr const*>(&address), sizeof(address));
@@ -105,19 +102,28 @@ bool UdpSocket::sendTo(std::string const& host, uint16_t port, std::vector<uint8
 
 std::optional<UdpPacket> UdpSocket::receiveOne(int timeoutMs)
 {
-    if (sockfd_ == invalidSocket()) {
+    if (sockfd_ == invalid_socket) {
         return std::nullopt;
     }
 
     fd_set readSet;
     FD_ZERO(&readSet);
+#ifdef _WIN32
+    FD_SET(static_cast<SOCKET>(sockfd_), &readSet);
+#else
     FD_SET(sockfd_, &readSet);
+#endif
 
     timeval timeout{};
     timeout.tv_sec = timeoutMs / 1000;
     timeout.tv_usec = (timeoutMs % 1000) * 1000;
 
+#ifdef _WIN32
+    // nfds is ignored on Windows; pass 0 to avoid narrowing from SOCKET (uintptr_t) to int.
+    const int ready = select(0, &readSet, nullptr, nullptr, &timeout);
+#else
     const int ready = select(sockfd_ + 1, &readSet, nullptr, nullptr, &timeout);
+#endif
     if (ready <= 0) {
         return std::nullopt;
     }
@@ -126,8 +132,9 @@ std::optional<UdpPacket> UdpSocket::receiveOne(int timeoutMs)
     sockaddr_in sender{};
     socklen_t senderSize = sizeof(sender);
 #ifdef _WIN32
-    const auto count = recvfrom(sockfd_, reinterpret_cast<char*>(buffer.data()), static_cast<int>(buffer.size()), 0,
-                               reinterpret_cast<sockaddr*>(&sender), &senderSize);
+    const auto count = recvfrom(static_cast<SOCKET>(sockfd_), reinterpret_cast<char*>(buffer.data()),
+                                static_cast<int>(buffer.size()), 0,
+                                reinterpret_cast<sockaddr*>(&sender), &senderSize);
 #else
     const auto count = recvfrom(sockfd_, reinterpret_cast<char*>(buffer.data()), buffer.size(), 0,
                                reinterpret_cast<sockaddr*>(&sender), &senderSize);
