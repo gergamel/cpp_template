@@ -73,9 +73,6 @@ def create_ssl_context() -> ssl.SSLContext:
                 pass
     return ctx
 
-AVI_TOOLDIR = Path(os.environ['AVI_TOOLDIR'])
-SCRIPT_ROOT = Path(__file__).parent
-
 @dataclass
 class FileUrl():
     url      : str
@@ -140,9 +137,17 @@ def load_manifest(path:str|Path):
 
 if __name__=="__main__":
     dry_run = True if (len(sys.argv)>1 and sys.argv[1] in {"-d","--dry-run"}) else False
+
+    AVI_TOOLDIR = Path(os.environ['AVI_TOOLDIR'])
+    SCRIPT_ROOT = Path(__file__).parent
     
     download_root = AVI_TOOLDIR / "dl"
     download_root.mkdir(parents=True,exist_ok=True)
+    print(f"-"*80)
+    print(f"AVI Development Tools Downloader")
+    print(f" AVI_TOOLDIR = {AVI_TOOLDIR}")
+    if dry_run: print(f" Dry run mode")
+    print(f"-"*80)
     os_type = platform.system().lower()
     ssl_ctx = create_ssl_context()
 
@@ -159,17 +164,18 @@ if __name__=="__main__":
         try:
             with urllib.request.urlopen(url,context=ssl_ctx) as response:
                 file_size:int = response.length
-                sys.stdout.write(f'{t.name:{col1_len}s} : fetching {filename:{col2_len}s} |         |')
-                sys.stdout.write('\b'*10)
-                sys.stdout.flush()
+                if dry_run:
+                    sys.stdout.write(f'{t.name:{col1_len}s}:{file_size:12}B : {filename:{col2_len}s}')
+                else:
+                    sys.stdout.write(f'{t.name:{col1_len}s}:{file_size:12}B : {filename:{col2_len}s} |         |' + '\b'*10)
+                    sys.stdout.flush()
                 prog_step = float(file_size)/10.0
                 prog_next = prog_step
                 rbytes = 0
                 wbytes = 0
-                if dry_run:
-                    sys.stdout.write(f" DRY RUN | {file_size} Bytes")
-                else:
-                    with open(filename,"wb") as fp:
+                file_path = download_root / filename
+                if not dry_run:
+                    with open(file_path,"wb") as fp:
                         # # 3. Stream data from response straight into fp
                         # shutil.copyfileobj(response, fp)
                         chunk_size = 4096
@@ -191,7 +197,7 @@ if __name__=="__main__":
                             # msg = f"{wlen}/{file_size} Bytes {progress:.01f} %"
                             # sys.stdout.write(msg)
                             # sys.stdout.flush()
-                sys.stdout.write("\n")
+                sys.stdout.write(f"\n  \"{file_path}\"\n")
         except urllib.error.HTTPError as e:
             print(f"ERROR: {e} \"{url}\"")
         except urllib.error.URLError as e:
