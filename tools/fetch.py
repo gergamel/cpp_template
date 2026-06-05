@@ -141,7 +141,7 @@ def load_manifest(path:str|Path):
 "Downloaded : "
 "Extracting : "
 
-def fetch_archive(context:ssl.SSLContext,url:str,filepath:Path):
+def fetch_archive(context:ssl.SSLContext,url:str,filepath:Path,dry_run:bool=False):
     try:
         with urllib.request.urlopen(url,context=ssl_ctx) as response:
             file_size:int = response.length
@@ -174,7 +174,7 @@ def fetch_archive(context:ssl.SSLContext,url:str,filepath:Path):
                     #     # msg = f"{wlen}/{file_size} Bytes {progress:.01f} %"
                     #     # sys.stdout.write(msg)
                     #     # sys.stdout.flush()      
-            print(f"Downloaded : {filepath}")
+                print(f"Downloaded : {filepath}")
     except urllib.error.HTTPError as e:
         print(f"ERROR: {e} \"{url}\"")
     except urllib.error.URLError as e:
@@ -341,13 +341,16 @@ if __name__=="__main__":
         filepath = download_root / filename
 
         if not filepath.exists():
-            fetch_archive(ssl_ctx,url,filepath)
+            fetch_archive(ssl_ctx,url,filepath,dry_run=dry_run)
             # TODO: Crypto digest checking of archives
-        print(f"Extracting : {filepath}" )
-        tooldir = extract_archive(str(filepath),str(AVI_TOOLDIR))
-        if t.version and t.version not in tooldir.name:
-            versioned = tooldir.parent / (tooldir.name + '-' + t.version)
-            if not versioned.exists():
-                tooldir.rename(versioned)
-            tooldir = versioned
-        print(f"DONE       : {tooldir}" )
+        if dry_run:
+            print(f"**dry run** : {filepath}" )
+        else:
+            print(f"Extracting : {filepath}" )
+            tooldir = extract_archive(str(filepath),str(AVI_TOOLDIR))
+            if t.version and t.version not in tooldir.name:
+                versioned = tooldir.parent / (tooldir.name + '-' + t.version)
+                if not versioned.exists():
+                    tooldir.rename(versioned)
+                tooldir = versioned
+            print(f"DONE       : {tooldir}" )
