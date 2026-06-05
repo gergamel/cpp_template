@@ -59,7 +59,7 @@ tools:
       windows: https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/clang+llvm-18.1.8-x86_64-pc-windows-msvc.tar.xz
 
   - name: arm-linux-eabihf-g++
-    command: arm-linux-eabihf-g++
+    command: arm-none-linux-gnueabihf-g++
     version: 15.2.rel1
     packages:
       apt: gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
@@ -69,7 +69,7 @@ tools:
       windows: https://developer.arm.com/-/media/Files/downloads/gnu/15.2.rel1/binrel/arm-gnu-toolchain-15.2.rel1-mingw-w64-x86_64-arm-none-linux-gnueabihf.zip
 
   - name: aarch64-linux-gnu-g++
-    command: aarch64-linux-gnu-g++
+    command: aarch64-none-linux-gnu-g++
     version: 15.2.rel1
     packages:
       apt: g++-aarch64-linux-gnu

@@ -27,6 +27,12 @@ This project exposes explicit GCC and Clang presets for both host and cross buil
 - `native-clang-debug`
 - `native-gcc-release`
 - `native-clang-release`
+- `msvc-debug`
+
+NOTE: The msvc-* targets require MSVC and have been tested with Visual Studio 17 2022 Community:
+
+- Windows SDK version 10.0.22000.0 to target Windows 10.0.26200
+- MSBuild version 17.13.26+f3741e9cf for .NET Framework
 
 Example:
 

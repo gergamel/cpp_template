@@ -14,11 +14,11 @@
             "binaryDir": "${sourceDir}/build/native-gcc-debug",
             "environment": {
                 "PATH": "$penv{AVI_TOOLDIR};$penv{PATH}",
-                "AVI_TOOLDIR": "$penv{AVI_TOOLDIR}",
-                "CMAKE_MAKE_PROGRAM": "$penv{AVI_TOOLDIR}/cmake.exe"
+                "AVI_TOOLDIR": "$penv{AVI_TOOLDIR}"
             },
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_MAKE_PROGRAM": "ninja",
                 "CMAKE_C_COMPILER": "gcc",
                 "CMAKE_CXX_COMPILER": "g++"
             }
@@ -31,11 +31,11 @@
             "binaryDir": "${sourceDir}/build/native-clang-debug",
             "environment": {
                 "PATH": "$penv{AVI_TOOLDIR};$penv{PATH}",
-                "AVI_TOOLDIR": "$penv{AVI_TOOLDIR}",
-                "CMAKE_MAKE_PROGRAM": "$env{AVI_TOOLDIR}/cmake.exe"
+                "AVI_TOOLDIR": "$penv{AVI_TOOLDIR}"
             },
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_MAKE_PROGRAM": "ninja",
                 "CMAKE_C_COMPILER": "clang",
                 "CMAKE_CXX_COMPILER": "clang++"
             }
@@ -46,10 +46,11 @@
             "generator": "Ninja",
             "binaryDir": "${sourceDir}/build/native-gcc-release",
             "environment": {
-                "CMAKE_MAKE_PROGRAM": "$env{AVI_TOOLDIR}/cmake.exe"
+                "PATH": "$penv{AVI_TOOLDIR};$penv{PATH}"
             },
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_MAKE_PROGRAM": "ninja",
                 "CMAKE_C_COMPILER": "gcc",
                 "CMAKE_CXX_COMPILER": "g++"
             }
@@ -60,10 +61,11 @@
             "generator": "Ninja",
             "binaryDir": "${sourceDir}/build/native-clang-release",
             "environment": {
-                "CMAKE_MAKE_PROGRAM": "$env{AVI_TOOLDIR}/cmake.exe"
+                "PATH": "$penv{AVI_TOOLDIR};$penv{PATH}"
             },
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_MAKE_PROGRAM": "ninja",
                 "CMAKE_C_COMPILER": "clang",
                 "CMAKE_CXX_COMPILER": "clang++"
             }
@@ -76,12 +78,13 @@
             "binaryDir": "${sourceDir}/build/arm-none-eabi-gcc-debug",
             "toolchainFile": "${sourceDir}/cmake/CMakeToolchain.cmake",
             "environment": {
-                "CMAKE_MAKE_PROGRAM": "$env{AVI_TOOLDIR}/cmake.exe",
+                "PATH": "$penv{AVI_TOOLDIR};$penv{PATH}",
                 "TARGET_ARCH": "arm-none-eabi"
             },
             "cacheVariables": {
                 "TARGET_ARCH": "arm-none-eabi",
                 "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_MAKE_PROGRAM": "ninja",
                 "CMAKE_C_COMPILER": "arm-none-eabi-gcc",
                 "CMAKE_CXX_COMPILER": "arm-none-eabi-g++"
             }
@@ -94,12 +97,13 @@
             "binaryDir": "${sourceDir}/build/arm-none-eabi-clang-debug",
             "toolchainFile": "${sourceDir}/cmake/CMakeToolchain.cmake",
             "environment": {
-                "CMAKE_MAKE_PROGRAM": "$env{AVI_TOOLDIR}/cmake.exe",
+                "PATH": "$penv{AVI_TOOLDIR};$penv{PATH}",
                 "TARGET_ARCH": "arm-none-eabi"
             },
             "cacheVariables": {
                 "TARGET_ARCH": "arm-none-eabi",
                 "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_MAKE_PROGRAM": "ninja",
                 "CMAKE_C_COMPILER": "clang",
                 "CMAKE_CXX_COMPILER": "clang++",
                 "CMAKE_C_COMPILER_TARGET": "arm-none-eabi",
@@ -113,14 +117,15 @@
             "binaryDir": "${sourceDir}/build/arm-linux-eabihf-gcc-release",
             "toolchainFile": "${sourceDir}/cmake/CMakeToolchain.cmake",
             "environment": {
-                "CMAKE_MAKE_PROGRAM": "$env{AVI_TOOLDIR}/cmake.exe",
+                "PATH": "$penv{AVI_TOOLDIR};$penv{PATH}",
                 "TARGET_ARCH": "arm-linux-eabihf"
             },
             "cacheVariables": {
                 "TARGET_ARCH": "arm-linux-eabihf",
                 "CMAKE_BUILD_TYPE": "Release",
-                "CMAKE_C_COMPILER": "arm-linux-gnueabihf-gcc",
-                "CMAKE_CXX_COMPILER": "arm-linux-gnueabihf-g++"
+                "CMAKE_MAKE_PROGRAM": "ninja",
+                "CMAKE_C_COMPILER": "arm-none-linux-gnueabihf-gcc",
+                "CMAKE_CXX_COMPILER": "arm-none-linux-gnueabihf-g++"
             }
         },
         {
@@ -130,16 +135,17 @@
             "binaryDir": "${sourceDir}/build/arm-linux-eabihf-clang-release",
             "toolchainFile": "${sourceDir}/cmake/CMakeToolchain.cmake",
             "environment": {
-                "CMAKE_MAKE_PROGRAM": "$env{AVI_TOOLDIR}/cmake.exe",
+                "PATH": "$penv{AVI_TOOLDIR};$penv{PATH}",
                 "TARGET_ARCH": "arm-linux-eabihf"
             },
             "cacheVariables": {
                 "TARGET_ARCH": "arm-linux-eabihf",
                 "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_MAKE_PROGRAM": "ninja",
                 "CMAKE_C_COMPILER": "clang",
                 "CMAKE_CXX_COMPILER": "clang++",
-                "CMAKE_C_COMPILER_TARGET": "arm-linux-gnueabihf",
-                "CMAKE_CXX_COMPILER_TARGET": "arm-linux-gnueabihf"
+                "CMAKE_C_COMPILER_TARGET": "arm-none-linux-gnueabihf",
+                "CMAKE_CXX_COMPILER_TARGET": "arm-none-linux-gnueabihf"
             }
         },
         {
@@ -149,14 +155,15 @@
             "binaryDir": "${sourceDir}/build/arm64-linux-gcc-release",
             "toolchainFile": "${sourceDir}/cmake/CMakeToolchain.cmake",
             "environment": {
-                "CMAKE_MAKE_PROGRAM": "$env{AVI_TOOLDIR}/cmake.exe",
+                "PATH": "$penv{AVI_TOOLDIR};$penv{PATH}",
                 "TARGET_ARCH": "arm64-linux"
             },
             "cacheVariables": {
                 "TARGET_ARCH": "arm64-linux",
                 "CMAKE_BUILD_TYPE": "Release",
-                "CMAKE_C_COMPILER": "aarch64-linux-gnu-gcc",
-                "CMAKE_CXX_COMPILER": "aarch64-linux-gnu-g++"
+                "CMAKE_MAKE_PROGRAM": "ninja",
+                "CMAKE_C_COMPILER": "aarch64-none-linux-gnu-gcc",
+                "CMAKE_CXX_COMPILER": "aarch64-none-linux-gnu-g++"
             }
         },
         {
@@ -166,20 +173,21 @@
             "binaryDir": "${sourceDir}/build/arm64-linux-clang-release",
             "toolchainFile": "${sourceDir}/cmake/CMakeToolchain.cmake",
             "environment": {
-                "CMAKE_MAKE_PROGRAM": "$env{AVI_TOOLDIR}/cmake.exe",
+                "PATH": "$penv{AVI_TOOLDIR};$penv{PATH}",
                 "TARGET_ARCH": "arm64-linux"
             },
             "cacheVariables": {
                 "TARGET_ARCH": "arm64-linux",
                 "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_MAKE_PROGRAM": "ninja",
                 "CMAKE_C_COMPILER": "clang",
                 "CMAKE_CXX_COMPILER": "clang++",
-                "CMAKE_C_COMPILER_TARGET": "aarch64-linux-gnu",
-                "CMAKE_CXX_COMPILER_TARGET": "aarch64-linux-gnu"
+                "CMAKE_C_COMPILER_TARGET": "aarch64-none-linux-gnu",
+                "CMAKE_CXX_COMPILER_TARGET": "aarch64-none-linux-gnu"
             }
         },
         {
-            "name": "windows-debug",
+            "name": "msvc-debug",
             "displayName": "Windows MSVC Debug",
             "generator": "Visual Studio 17 2022",
             "toolset": "host=x64",
@@ -233,8 +241,8 @@
             "configurePreset": "arm64-linux-clang-release"
         },
         {
-            "name": "windows-debug",
-            "configurePreset": "windows-debug"
+            "name": "msvc-debug",
+            "configurePreset": "msvc-debug"
         }
     ]
 }
